@@ -1,0 +1,11 @@
+package org.bytecub.reconsilationx.aUsrMgt.dao.master;
+
+import org.bytecub.reconsilationx.aUsrMgt.model.master.MUserRole;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface MUserRoleDao extends JpaRepository<MUserRole, Long>, JpaSpecificationExecutor<MUserRole> {
+    boolean existsByUserUserIdAndRolesRoleIdAndIsActive(Long userId, Long roleId, boolean b);
+}

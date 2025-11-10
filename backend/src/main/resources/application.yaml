@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: ReconsilationX
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://192.168.1.8:30432/bytecub?currentSchema=reconsilationx_db&useSSL=false&serverTimezone=UTC
+    username: bytecub_admin
+    password: UwBKsdysFkqIW3k
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 120000
+      connection-timeout: 300000
+      leak-detection-threshold: 300000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: app.studysync@gmail.com
+    password: 'thub kpyg wcln dotu'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1/reconsilationx
+
+app:
+  base-url: http://localhost:8080/api/v1/reconsilationx
+#  base-url: http://192.168.1.8:30088/api/v1/reconsilationx
+
+#file:
+#  storage:
+#    upload-url: https://storage.bytecub.org/upload/
+#    access-url: https://storage.bytecub.org/volume/
+#    username: admin
+#    password: adminchamod@2000723
+
+logging:
+  file:
+    name: ${spring.application.name}.log
