@@ -1,22 +1,37 @@
 interface MenuItem {
-  /** menu item code */
   code: string;
-  /** menu labels */
-  label: {
-    zh_CN: string;
-    en_US: string;
-  };
-  /** 图标名称
-   *
-   * 子子菜单不需要图标
-   */
+  labels: Record<string, string>; // dynamic keys
   icon?: string;
-  /** 菜单路由 */
   path: string;
-  /** 子菜单 */
   children?: MenuItem[];
 }
 
-export type MenuChild = Omit<MenuItem, 'children'>;
+type MenuList = MenuItem[];
 
-export type MenuList = MenuItem[];
+// Mapper function
+export function mapMenu(dto: any[]): MenuList {
+  return dto.map(item => {
+    const labelsObj: Record<string, string> = {};
+
+    if (item.labels) {
+      item.labels.forEach((label: any) => {
+        if (label.langCode && label.label) {
+          labelsObj[label.langCode] = label.label;
+        }
+      });
+    }
+
+    // Recursively map children
+    const children = item.children && item.children.length > 0 ? mapMenu(item.children) : undefined;
+
+    return {
+      code: item.code,
+      labels: labelsObj,
+      icon: item.icon || undefined,
+      path: item.path,
+      children
+    };
+  });
+}
+
+export type { MenuItem, MenuList };

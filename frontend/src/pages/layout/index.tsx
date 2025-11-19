@@ -1,4 +1,4 @@
-import type { MenuChild, MenuList } from '@/interface/layout/menu.interface';
+import type { MenuItem, MenuList } from '@/interface/layout/menu.interface';
 import type { FC } from 'react';
 
 import './index.less';
@@ -49,8 +49,7 @@ const LayoutPage: FC = () => {
   };
 
   const initMenuListAll = (menu: MenuList) => {
-    const MenuListAll: MenuChild[] = [];
-
+    const MenuListAll: MenuItem[] = [];
     menu.forEach(m => {
       if (!m?.children?.length) {
         MenuListAll.push(m);
@@ -65,9 +64,8 @@ const LayoutPage: FC = () => {
   };
 
   const fetchMenuList = useCallback(async () => {
-    const { status, result } = await getMenuList();
-
-    if (status) {
+    const result: MenuList = await getMenuList();
+    if (result) {
       setMenuList(result);
       dispatch(
         setUserItem({

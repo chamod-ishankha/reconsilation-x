@@ -70,7 +70,7 @@ public class MUser extends AuditModel implements UserDetails {
     @JoinColumn(name = "BRANCH_ID", referencedColumnName = "BRANCH_ID", nullable = false)
     private MCompanyBranch branch;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<MUserRole> userRoles = new HashSet<>();
 
     @Override

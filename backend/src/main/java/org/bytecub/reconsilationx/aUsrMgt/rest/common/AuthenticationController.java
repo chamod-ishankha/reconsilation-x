@@ -3,11 +3,15 @@ package org.bytecub.reconsilationx.aUsrMgt.rest.common;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.bytecub.reconsilationx.aUsrMgt.dto.common.*;
+import org.bytecub.reconsilationx.aUsrMgt.dto.master.MMenuDto;
 import org.bytecub.reconsilationx.aUsrMgt.dto.master.MUserDto;
+import org.bytecub.reconsilationx.aUsrMgt.service.master.MenuService;
 import org.bytecub.reconsilationx.aUsrMgt.service.master.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -50,9 +54,9 @@ public class AuthenticationController {
 
     // forgot password
     @PostMapping("/forgot-password")
-    public ResponseEntity<ResponseDto> forgotPassword(@RequestParam String email, @RequestParam Long companyId) {
+    public ResponseEntity<ResponseDto> forgotPassword(@RequestBody ForgotPasswordRequestDto forgotPasswordRequestDto) {
         log.info("Inside authentication controller forgotPassword method");
-        return userService.forgotPassword(email, companyId);
+        return userService.forgotPassword(forgotPasswordRequestDto);
     }
 
     // otp verification

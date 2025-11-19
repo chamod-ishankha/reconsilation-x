@@ -154,9 +154,9 @@ public class UserServiceImpl implements UserService {
         AuthenticationDto authenticationDto = new AuthenticationDto();
 
         // Fetch user before authentication for lockout logic
-        MCompany company = companyDao.findByCompanyIdAndIsActive(loginRequest.getCompanyId(), true)
+        MCompany company = companyDao.findByEmailAndIsActive(loginRequest.getCompanyEmail(), true)
                 .orElseThrow(() -> new BadRequestAlertException("Company not found", "User", "Login failed"));
-        MUser user = userDao.findByEmailAndCompanyCompanyId(loginRequest.getEmail(), loginRequest.getCompanyId())
+        MUser user = userDao.findByEmailAndCompanyEmail(loginRequest.getEmail(), loginRequest.getCompanyEmail())
                 .orElseThrow(() -> new BadRequestAlertException("Invalid credentials", "User", "Login failed"));
 
         if (Boolean.TRUE.equals(user.getIsLocked())) {
@@ -438,18 +438,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> forgotPassword(String email, Long companyId) {
+    public ResponseEntity<ResponseDto> forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) {
         log.info("Inside user service forgot password method");
         try {
+
+            String yourEmail = forgotPasswordRequestDto.getYourEmail();
+            String companyEmail = forgotPasswordRequestDto.getCompanyEmail();
+
             // validation
-            if (!userDao.existsByEmailAndCompanyCompanyIdAndIsActive(email, companyId, true)) {
+            if (!userDao.existsByEmailAndCompanyEmailAndIsActive(yourEmail, companyEmail, true)) {
                 log.error("Email not registered");
                 throw new BadRequestAlertException("Email not registered", "User", "User not found");
             }
             // generate OTP
             String otp = verificationTokenService.generateOTP();
-            verificationTokenService.saveOtp(otp, userDao.findByEmailAndCompanyCompanyIdAndIsActive(email, companyId, true).get().getUserId());
-            String companyName = userDao.findByEmailAndCompanyCompanyIdAndIsActive(email, companyId, true).get().getCompany().getName();
+            verificationTokenService.saveOtp(otp, userDao.findByEmailAndCompanyEmailAndIsActive(yourEmail, companyEmail, true).get().getUserId());
+            String companyName = userDao.findByEmailAndCompanyEmailAndIsActive(yourEmail, companyEmail, true).get().getCompany().getName();
             // send verification & registration email
             String content = PASSWORD_RESET_EMAIL_CONTENT;
             content = content.replace("{{otp}}", otp);
@@ -458,7 +462,7 @@ public class UserServiceImpl implements UserService {
             String subject = PASSWORD_RESET_EMAIL_SUBJECT;
             subject = subject.replace("{{companyName}}", companyName);
 
-            emailService.sendEmail(email, subject, content);
+            emailService.sendEmail(yourEmail, subject, content);
 
             ResponseDto response = new ResponseDto();
             response.setMessage("OTP sent to your email");

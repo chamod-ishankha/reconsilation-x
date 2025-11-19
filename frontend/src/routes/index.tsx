@@ -11,6 +11,7 @@ import LoginPage from '@/pages/login';
 import CompanySignupPage from '@/pages/companySignup';
 
 import WrapperRouteComponent from './config';
+import ForgotPassword from '@/pages/forgotPassword';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
 const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/doucumentation'));
@@ -36,12 +37,16 @@ const routeList: RouteObject[] = [
     element: <WrapperRouteComponent element={<LoginPage />} titleId="title.login" />,
   },
   {
-    path: '/signup',
-    element: <WrapperRouteComponent element={<CompanySignupPage />} titleId="title.signup" />,
+    path: '/company-register',
+    element: <WrapperRouteComponent element={<CompanySignupPage />} titleId="title.companyRegister" />,
+  },
+  {
+    path: '/forgot-password',
+    element: <WrapperRouteComponent element={<ForgotPassword />} titleId="title.forgotPassword" />,
   },
   {
     path: '/',
-    element: <WrapperRouteComponent element={<LayoutPage />} titleId="" />,
+    element: <WrapperRouteComponent element={<LayoutPage />} titleId="" auth={true} />,
     children: [
       {
         path: '',

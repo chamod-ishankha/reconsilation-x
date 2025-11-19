@@ -27,6 +27,7 @@ public class MUserRole extends AuditModel {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = USER_ROLE_TABLE)
     @Column(name = "USER_ROLE_ID")
     private Long userRoleId;
+
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
@@ -34,7 +35,7 @@ public class MUserRole extends AuditModel {
     @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false)
     private MUser user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID", nullable = false)
     private RRoles roles;
 

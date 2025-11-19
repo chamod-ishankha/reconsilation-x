@@ -1,15 +1,40 @@
-.login-page {
+.login-page-style {
   display: flex;
   justify-content: center;
   align-items: center;
+
   &-form {
-    width: 300px;
+    width: 350px;
     padding: 50px 40px 10px;
     border-radius: 10px;
+
     h2 {
       text-align: center;
     }
-    &_button {
+
+    &_remember {
+      margin-bottom: 10px;
+
+      .remember-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      a {
+        color: #1890ff;
+      }
+    }
+
+    &_item-button {
+      margin-bottom: 10px;
+    }
+
+    &_login-button {
+      width: 100%;
+    }
+
+    &_register-button {
       width: 100%;
     }
   }

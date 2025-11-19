@@ -21,11 +21,13 @@ public interface MUserDao extends JpaRepository<MUser, Long>, JpaSpecificationEx
 
     boolean existsByUserIdAndIsActive(Long userId, boolean b);
 
-    boolean existsByEmailAndCompanyCompanyIdAndIsActive(String email, Long companyId, boolean b);
+    boolean existsByEmailAndCompanyEmailAndIsActive(String email, String companyId, boolean b);
 
-    Optional<MUser> findByEmailAndCompanyCompanyIdAndIsActive(String email, Long companyId, boolean b);
+    Optional<MUser> findByEmailAndCompanyEmailAndIsActive(String email, String companyEmail, boolean b);
 
     boolean existsByEmailAndCompanyCompanyIdAndBranchBranchIdAndIsActive(String email, Long companyId, Long branchId, boolean b);
 
     Optional<MUser> findByUserIdAndIsActive(Long userId, boolean b);
+
+    Optional<MUser> findByEmailAndCompanyEmail(String email, String companyEmail);
 }

@@ -10,5 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface MCompanyDao extends JpaRepository<MCompany, Long>, JpaSpecificationExecutor<MCompany> {
-    Optional<MCompany> findByCompanyIdAndIsActive(@NotNull(message = "Company ID is required") Long companyId, boolean b);
+    Optional<MCompany> findByCompanyIdAndIsActive(Long companyId, boolean b);
+
+    Optional<MCompany> findByEmailAndIsActive(String companyEmail, boolean b);
 }

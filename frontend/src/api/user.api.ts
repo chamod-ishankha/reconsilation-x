@@ -1,9 +1,16 @@
-import type { LoginParams, LoginResult, LogoutParams, LogoutResult } from '../interface/user/login';
+import { GlobalResult } from '@/interface/global/global';
+import type { CompanyRegisterParams, CompanyRegisterResult, ForgotPasswordParams, LoginParams, LoginResult, LogoutParams, LogoutResult, OtpVerificationParams, ResetPasswordParams } from '../interface/user/login';
 
 import { request } from './request';
 
-/** 登录接口 */
-export const apiLogin = (data: LoginParams) => request<LoginResult>('post', '/user/login', data);
+export const apiLogin = (data: LoginParams) => request<LoginResult>('post', '/auth/login', data);
 
-/** 登出接口 */
-export const apiLogout = (data: LogoutParams) => request<LogoutResult>('post', '/user/logout', data);
+export const apiLogout = (data: LogoutParams) => { return { status: true } };
+
+export const apiCompanyRegister = (data: CompanyRegisterParams) => request<CompanyRegisterResult>('post', '/auth/register/company', data);
+
+export const apiForgotPasswordRequest = (data: ForgotPasswordParams) => request<GlobalResult>('post', '/auth/forgot-password', data);
+
+export const apiOtpVerification = (data: OtpVerificationParams) => request<GlobalResult>('post', '/auth/verify-otp', data);
+
+export const apiResetPassword = (data: ResetPasswordParams) => request<GlobalResult>('post', '/auth/reset-password', data);

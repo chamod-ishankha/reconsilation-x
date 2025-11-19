@@ -25,7 +25,7 @@ public interface UserService {
 
     String updateVerifyStatus(String token);
 
-    ResponseEntity<ResponseDto> forgotPassword(String email, Long companyId);
+    ResponseEntity<ResponseDto> forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto);
 
     ResponseEntity<ResponseDto> verifyOtp(OtpVerificationDto otpVerificationDto);
 

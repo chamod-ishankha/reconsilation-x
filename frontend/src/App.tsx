@@ -22,7 +22,7 @@ const App: React.FC = () => {
   const setTheme = (dark = true) => {
     dispatch(
       setGlobalState({
-        theme: dark ? 'dark' : 'dark',
+        theme: dark ? 'dark' : 'light',
       }),
     );
   };

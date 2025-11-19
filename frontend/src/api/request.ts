@@ -8,7 +8,8 @@ import { setGlobalState } from '@/stores/global.store';
 // import { history } from '@/routes/history';
 
 const axiosInstance = axios.create({
-  timeout: 6000,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  timeout: import.meta.env.VITE_API_TIMEOUT ? Number(import.meta.env.VITE_API_TIMEOUT) : 5000,
 });
 
 axiosInstance.interceptors.request.use(
@@ -19,6 +20,18 @@ axiosInstance.interceptors.request.use(
       }),
     );
 
+    const token = localStorage.getItem('t');
+
+    // SAFE: initialize headers if undefined
+    if (!config.headers) {
+      config.headers = {};
+    }
+
+    // Skip token for /auth endpoints
+    if (!config.url?.includes('/auth')) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
   error => {
@@ -27,7 +40,7 @@ axiosInstance.interceptors.request.use(
         loading: false,
       }),
     );
-    Promise.reject(error);
+    return Promise.reject(error);
   },
 );
 
@@ -40,10 +53,14 @@ axiosInstance.interceptors.response.use(
     );
 
     if (config?.data?.message) {
-      // $message.success(config.data.message)
+      $message.success(config.data.message)
     }
 
-    return config?.data;
+    return {
+      status: true,
+      message: config?.data?.message || 'Success',
+      result: config?.data,
+    };
   },
   error => {
     store.dispatch(
@@ -53,10 +70,12 @@ axiosInstance.interceptors.response.use(
     );
     // if needs to navigate to login page when request exception
     // history.replace('/login');
-    let errorMessage = '系统异常';
+    let errorMessage = 'System exception';
 
     if (error?.message?.includes('Network Error')) {
-      errorMessage = '网络错误，请检查您的网络';
+      errorMessage = 'Network error, please check your network.';
+    } else if (error?.response?.data?.error) {
+      errorMessage = error.response.data.error;
     } else {
       errorMessage = error?.message;
     }
@@ -92,11 +111,6 @@ export const request = <T = any>(
   data?: any,
   config?: AxiosRequestConfig,
 ): MyResponse<T> => {
-  // const prefix = '/api'
-  const prefix = '';
-
-  url = prefix + url;
-
   if (method === 'post') {
     return axiosInstance.post(url, data, config);
   } else {

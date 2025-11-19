@@ -13,8 +13,9 @@ import { formatSearch } from '@/utils/formatSearch';
 import { loginAsync } from '../../stores/user.action';
 
 const initialValues: LoginParams = {
-  username: 'guest',
-  password: 'guest',
+  companyEmail: '',
+  email: '',
+  password: '',
   // remember: true
 };
 
@@ -26,9 +27,11 @@ const LoginForm: FC = () => {
   const { token } = antTheme.useToken();
 
   const onFinished = async (form: LoginParams) => {
-    const res = dispatch(await loginAsync(form));
+    const success = await dispatch(loginAsync(form));
 
-    if (!!res) {
+    console.log('success:', success);
+
+    if (!!success) {
       const search = formatSearch(location.search);
       const from = search.from || { pathname: '/' };
 
@@ -37,23 +40,40 @@ const LoginForm: FC = () => {
   };
 
   return (
-    <div className="login-page" style={{ backgroundColor: token.colorBgContainer }}>
-      <Form<LoginParams> onFinish={onFinished} className="login-page-form" initialValues={initialValues}>
-        <h2>REACT ANTD ADMIN</h2>
+    <div className="login-page-style" style={{ backgroundColor: token.colorBgContainer }}>
+      <Form<LoginParams> onFinish={onFinished} className="login-page-style-form" initialValues={initialValues}>
+        <h2>RECONSILATION-X LOGIN</h2>
         <Form.Item
-          name="username"
+          name="companyEmail"
           rules={[
             {
               required: true,
               message: formatMessage({
-                id: 'gloabal.tips.enterUsernameMessage',
+                id: 'gloabal.tips.enterLoginCompanyEmailMessage',
               }),
             },
           ]}
         >
           <Input
             placeholder={formatMessage({
-              id: 'gloabal.tips.username',
+              id: 'gloabal.tips.loginCompanyEmail',
+            })}
+          />
+        </Form.Item>
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: formatMessage({
+                id: 'gloabal.tips.enterEmailMessage',
+              }),
+            },
+          ]}
+        >
+          <Input
+            placeholder={formatMessage({
+              id: 'gloabal.tips.email',
             })}
           />
         </Form.Item>
@@ -75,20 +95,26 @@ const LoginForm: FC = () => {
             })}
           />
         </Form.Item>
-        <Form.Item name="remember" valuePropName="checked">
-          <Checkbox>
-            <LocaleFormatter id="gloabal.tips.rememberUser" />
-          </Checkbox>
+        <Form.Item name="remember" valuePropName="checked" className='login-page-style-form_remember'>
+          <div className="remember-row">
+            <Checkbox>
+              <LocaleFormatter id="gloabal.tips.rememberUser" />
+            </Checkbox>
+
+            <a href="/forgot-password">
+              <LocaleFormatter id="gloabal.tips.forgotPassword" />
+            </a>
+          </div>
         </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" type="primary" className="login-page-form_button">
+        <Form.Item className='login-page-style-form_item-button'>
+          <Button htmlType="submit" type="primary" className="login-page-style-form_login-button">
             <LocaleFormatter id="gloabal.tips.login" />
           </Button>
         </Form.Item>
-        <Form.Item>
-          <Button htmlType="button" type="dashed" className="login-page-form_button"
-            onClick={() => navigate('/signup')}>
-            <LocaleFormatter id="gloabal.tips.signup" />
+        <Form.Item className='login-page-style-form_item-button'>
+          <Button htmlType="button" type="dashed" className="login-page-style-form_register-button"
+            onClick={() => navigate('/company-register')}>
+            <LocaleFormatter id="gloabal.tips.companyRegister" />
           </Button>
         </Form.Item>
       </Form>

@@ -5,23 +5,39 @@ import { useIntl } from 'react-intl';
 
 import PrivateRoute from './pravateRoute';
 
-export interface WrapperRouteProps extends RouteProps {
+export interface WrapperRouteProps {
   /** document title locale id */
   titleId: string;
-  /** authorization？ */
+
+  /** need authentication? */
   auth?: boolean;
+
+  /** the actual page element */
+  element: ReactElement;
+
+  /** route path */
+  path?: string;
+
+  /** other optional router fields */
+  index?: boolean;
 }
 
-const WrapperRouteComponent: FC<WrapperRouteProps> = ({ titleId, auth, ...props }) => {
+const WrapperRouteComponent: FC<WrapperRouteProps> = ({
+  titleId,
+  auth,
+  element,
+}) => {
   const { formatMessage } = useIntl();
 
   if (titleId) {
-    document.title = formatMessage({
-      id: titleId,
-    });
+    document.title = formatMessage({ id: titleId });
   }
 
-  return auth ? <PrivateRoute {...props} /> : (props.element as ReactElement);
+  return auth ? (
+    <PrivateRoute element={element} />
+  ) : (
+    element
+  );
 };
 
 export default WrapperRouteComponent;

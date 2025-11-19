@@ -1,6 +1,7 @@
 export const enUS_title = {
   'title.login': 'Login',
-  'title.signup': 'Sign Up',
+  'title.companyRegister': 'Company Registration',
+  'title.forgotPassword': 'Forgot Password',
   'title.dashboard': 'Dashboard',
   'title.documentation': 'Documentation',
   'title.guide': 'Guide',

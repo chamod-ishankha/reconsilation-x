@@ -16,6 +16,6 @@ public class LoginRequest {
     @NotEmpty(message = "Password is required")
     @NotNull(message = "Password is required")
     private String password;
-    @NotNull(message = "Company ID is required")
-    private Long companyId;
+    @NotNull(message = "Company Email address is required")
+    private String companyEmail;
 }

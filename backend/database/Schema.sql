@@ -16,6 +16,10 @@ CREATE SEQUENCE IF NOT EXISTS t_password_reset_token_seq START WITH 1 INCREMENT 
 
 CREATE SEQUENCE IF NOT EXISTS t_verification_token_seq START WITH 1 INCREMENT BY 1;
 
+CREATE SEQUENCE IF NOT EXISTS m_menu_label_seq START WITH 1 INCREMENT BY 1;
+
+CREATE SEQUENCE IF NOT EXISTS m_menu_seq START WITH 1 INCREMENT BY 1;
+
 CREATE TABLE m_company
 (
     company_id                          BIGINT       NOT NULL,
@@ -161,6 +165,33 @@ CREATE TABLE t_verification_token
     CONSTRAINT pk_t_verification_token PRIMARY KEY (verification_id)
 );
 
+CREATE TABLE m_menu
+(
+    menu_id    BIGINT      NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE,
+    updated_at TIMESTAMP WITHOUT TIME ZONE,
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255),
+    code       VARCHAR(50) NOT NULL,
+    icon       VARCHAR(100),
+    path       VARCHAR(255),
+    parent_id  BIGINT,
+    CONSTRAINT pk_m_menu PRIMARY KEY (menu_id)
+);
+
+CREATE TABLE m_menu_label
+(
+    menu_label_id BIGINT       NOT NULL,
+    created_at    TIMESTAMP WITHOUT TIME ZONE,
+    updated_at    TIMESTAMP WITHOUT TIME ZONE,
+    created_by    VARCHAR(255),
+    updated_by    VARCHAR(255),
+    lang_code     VARCHAR(10)  NOT NULL,
+    label         VARCHAR(100) NOT NULL,
+    menu_id       BIGINT       NOT NULL,
+    CONSTRAINT pk_m_menu_label PRIMARY KEY (menu_label_id)
+);
+
 ALTER TABLE m_company
     ADD CONSTRAINT uc_m_company_email UNIQUE (email);
 
@@ -229,3 +260,16 @@ ALTER TABLE t_verification_token
     ADD CONSTRAINT FK_T_VERIFICATION_TOKEN_ON_USER FOREIGN KEY (user_id) REFERENCES m_user (user_id);
 
 CREATE INDEX fk_T_VERIFICATION_TOKEN_M_USERS1_idx ON t_verification_token (user_id);
+
+ALTER TABLE m_menu
+    ADD CONSTRAINT uc_m_menu_code UNIQUE (code);
+
+CREATE INDEX idx_menu_code ON m_menu (code);
+
+ALTER TABLE m_menu_label
+    ADD CONSTRAINT FK_M_MENU_LABEL_ON_MENU FOREIGN KEY (menu_id) REFERENCES m_menu (menu_id);
+
+CREATE INDEX idx_menu_label_menu_id ON m_menu_label (menu_id);
+
+ALTER TABLE m_menu
+    ADD CONSTRAINT FK_M_MENU_ON_PARENT FOREIGN KEY (parent_id) REFERENCES m_menu (menu_id);

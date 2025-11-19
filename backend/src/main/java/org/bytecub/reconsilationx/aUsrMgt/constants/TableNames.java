@@ -10,6 +10,8 @@ public class TableNames {
     public final static String USER_ROLE_TABLE = "M_USER_ROLE";
     public final static String CUSTOMER_LOAN_OD_TABLE = "SAM_CUSTOMER_LOAN_OD";
     public final static String COMPANY_BRANCH_TABLE = "M_COMPANY_BRANCH";
+    public final static String MENU_TABLE = "M_MENU";
+    public final static String MENU_LABEL_TABLE = "M_MENU_LABEL";
 
     /**
      * Transaction table names
